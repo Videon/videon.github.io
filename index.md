@@ -17,16 +17,16 @@
   method="POST"
 >
   <label>
-    Your email:
+    Your email:<br>
     <input type="email" name="email">
   </label>
-
+<br>
   
   <label>
-    Your message:
+    Your message:<br>
     <textarea name="message"></textarea>
   </label>
-
+<br>
   
   <button type="submit">Send</button>
 </form>
