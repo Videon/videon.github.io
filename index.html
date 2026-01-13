@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Vadim Nickel</title>
+    <meta name="description" content="Projects, games, other, music, and contact." />
+    <style>
+        :root{
+            color-scheme: light dark;
+            --bg:#0b0c10;
+            --panel:rgba(255,255,255,0.06);
+            --border:rgba(255,255,255,0.12);
+            --text:rgba(255,255,255,0.92);
+            --muted:rgba(255,255,255,0.65);
+            --shadow:0 20px 60px rgba(0,0,0,0.35);
+            --radius:18px;
+            --pad:20px;
+            --max:760px;
+            --gap:16px;
+            --focus:rgba(255,255,255,0.25);
+        }
+        @media (prefers-color-scheme: light){
+            :root{
+                --bg:#f7f7fb;
+                --panel:rgba(0,0,0,0.04);
+                --border:rgba(0,0,0,0.10);
+                --text:rgba(0,0,0,0.88);
+                --muted:rgba(0,0,0,0.62);
+                --shadow:0 18px 50px rgba(0,0,0,0.10);
+                --focus:rgba(0,0,0,0.18);
+            }
+        }
+
+        *{ box-sizing:border-box; }
+        html,body{ height:100%; }
+        body{
+            margin:0;
+            background:
+                    radial-gradient(1200px 800px at 15% 10%, rgba(120,120,255,0.20), transparent 60%),
+                    radial-gradient(1000px 700px at 85% 15%, rgba(0,255,200,0.12), transparent 55%),
+                    radial-gradient(900px 600px at 50% 85%, rgba(255,180,0,0.10), transparent 55%),
+                    var(--bg);
+            color:var(--text);
+            font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
+            line-height:1.45;
+        }
+
+        a{ color:inherit; text-decoration:none; }
+        a:hover{ text-decoration:underline; text-underline-offset:3px; }
+
+        .wrap{
+            max-width:var(--max);
+            margin:0 auto;
+            padding:52px 18px 70px;
+            text-align:center;
+        }
+
+        header{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:8px;
+            margin-bottom:22px;
+        }
+        .title{
+            font-size:22px;
+            letter-spacing:0.2px;
+            margin:0;
+        }
+        .subtitle{
+            margin:0;
+            color:var(--muted);
+            font-size:14px;
+        }
+
+        .grid{
+            display:grid;
+            grid-template-columns:1fr; /* one column always */
+            gap:var(--gap);
+            justify-items:center;      /* center sections */
+        }
+
+        section{
+            width:100%;
+            background:var(--panel);
+            border:1px solid var(--border);
+            border-radius:var(--radius);
+            padding:var(--pad);
+            box-shadow:var(--shadow);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            text-align:center;
+        }
+
+        h2{
+            margin:0 0 12px;
+            font-size:13px;
+            font-weight:650;
+            letter-spacing:0.12em;
+            text-transform:uppercase;
+            color:var(--muted);
+        }
+
+        .links{
+            display:flex;
+            flex-wrap:wrap;
+            gap:10px;
+            margin:0;
+            padding:0;
+            list-style:none;
+            justify-content:center; /* center chips */
+        }
+
+        .chip{
+            display:inline-flex;
+            align-items:center;
+            gap:10px;
+            padding:10px 12px;
+            border-radius:999px;
+            border:1px solid var(--border);
+            background:rgba(255,255,255,0.04);
+        }
+        @media (prefers-color-scheme: light){
+            .chip{ background:rgba(0,0,0,0.02); }
+        }
+        .chip:hover{
+            border-color:var(--focus);
+            text-decoration:none;
+        }
+
+        /* Spotify embed */
+        .embed{
+            border-radius:14px;
+            overflow:hidden;
+            border:1px solid var(--border);
+        }
+        .embed iframe{
+            display:block;
+            width:100%;
+            height:352px;
+            border:0;
+        }
+
+        /* Contact */
+        form{
+            display:grid;
+            gap:12px;
+            justify-items:center;
+        }
+        label{
+            font-size:13px;
+            color:var(--muted);
+        }
+        input,textarea,button{
+            font:inherit;
+            border-radius:12px;
+            border:1px solid var(--border);
+            background:rgba(255,255,255,0.04);
+            color:var(--text);
+            padding:10px 12px;
+            outline:none;
+            width:min(520px, 100%);
+        }
+        @media (prefers-color-scheme: light){
+            input,textarea,button{ background:rgba(0,0,0,0.02); }
+        }
+        textarea{ min-height:120px; resize:vertical; }
+        input:focus,textarea:focus,button:focus{ border-color:var(--focus); }
+
+        button{
+            cursor:pointer;
+            width:auto;
+            padding:10px 14px;
+            justify-self:center;
+        }
+        button:hover{ border-color:var(--focus); }
+
+        footer{
+            margin-top:22px;
+            color:var(--muted);
+            font-size:12px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="wrap">
+    <header>
+        <h1 class="title">Vadim Nickel</h1>
+        <p class="subtitle">interaction · audio · games · design · creation · research</p>
+    </header>
+
+    <div class="grid">
+        <section>
+            <h2>Projects</h2>
+            <ul class="links">
+                <!-- add project links here if you want -->
+            </ul>
+        </section>
+
+        <section>
+            <h2>Games</h2>
+            <ul class="links">
+                <li>
+                    <a class="chip" href="https://videon.github.io/soundgarden/" target="_blank" rel="noopener noreferrer">
+                        <span>Soundgarden</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="chip" href="https://zolarsystems.itch.io/" target="_blank" rel="noopener noreferrer">
+                        <span>zolarsystems — itch.io</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Other</h2>
+            <ul class="links">
+                <li>
+                    <a class="chip" href="./p5trix/" rel="noopener">
+                        <span>P5Trix</span>
+                    </a>
+                </li>
+                <li>
+                    <a class="chip" href="https://www.youtube.com/watch?v=8cn7O_0eubo" rel="noopener">
+                        <span>Generative Relaxation</span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section>
+            <h2>Music</h2>
+            <div class="embed">
+                <iframe
+                        src="https://open.spotify.com/embed/artist/1d6eoE53vptd9Ur87w5Ra6?utm_source=generator"
+                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                        loading="lazy"
+                        title="Spotify embed"
+                ></iframe>
+            </div>
+        </section>
+
+        <section>
+            <h2>Contact</h2>
+            <form action="https://formspree.io/f/xwpqwbon" method="POST">
+                <div style="width:100%;">
+                    <label for="email">Your email</label><br />
+                    <input id="email" type="email" name="email" autocomplete="email" required />
+                </div>
+
+                <div style="width:100%;">
+                    <label for="message">Your message</label><br />
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+
+                <button type="submit">Send</button>
+            </form>
+        </section>
+    </div>
+
+    <footer>
+        <span>© <script>document.write(new Date().getFullYear())</script></span>
+    </footer>
+</div>
+</body>
+</html>
