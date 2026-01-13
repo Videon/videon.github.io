@@ -36,7 +36,7 @@
         }
 
         *{ box-sizing:border-box; }
-        html,body{ height:100%; }
+        html,body{ height:100%; overflow:hidden; }
         body{
             margin:0;
             background:
@@ -53,29 +53,49 @@
         a:hover{ text-decoration:underline; text-underline-offset:3px; }
 
         .wrap{
-            max-width:var(--max);
-            margin:0 auto;
-            padding:52px 18px 70px;
-            text-align:center;
+            /* this is the scroll container => scrollbar at far right */
+            height: 100vh;
+            overflow-y: auto;
+            overflow-x: hidden;
+            -webkit-overflow-scrolling: touch;
+
+            /* keep the background visible behind */
+            text-align: center;
+
+            /* vertical padding for page */
+            padding: 18px 0 max(70px, env(safe-area-inset-bottom));
         }
 
+        .inner{
+            /* centered content column */
+            max-width: var(--max);
+            margin: 0 auto;
+            padding: 34px 18px 0;
+        }
+
+
         header{
-            display:flex;
-            flex-direction:column;
-            align-items:center;
-            gap:8px;
-            margin-bottom:22px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+
+            /* keep it readable over the background */
+            background: color-mix(in srgb, var(--bg) 55%, transparent);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+
+            border-bottom: 1px solid var(--border);
+            padding: 18px 0;
+            margin-bottom: 18px;
         }
-        .title{
-            font-size:22px;
-            letter-spacing:0.2px;
-            margin:0;
+
+        header .inner{
+            /* header content aligns with the rest */
+            padding: 0 18px;
         }
-        .subtitle{
-            margin:0;
-            color:var(--muted);
-            font-size:14px;
-        }
+
+        .title{ margin:0; }
+        .subtitle{ margin:8px 0 0; }
 
         .grid{
             display:grid;
@@ -85,9 +105,9 @@
         }
 
         section{
-            width:100%;
+            width:60%;
             background:var(--panel);
-            border:1px solid var(--border);
+            border:0px solid var(--border);
             border-radius:var(--radius);
             padding:var(--pad);
             box-shadow:var(--shadow);
