@@ -4,271 +4,419 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Vadim Nickel</title>
-    <meta name="description" content="Projects, games, other, music, and contact." />
+    <meta name="description" content="Interaction, audio, games, design, creation, and research." />
     <style>
-        :root{
-            color-scheme: light dark;
-            --bg:#0b0c10;
-            --panel:rgba(255,255,255,0.06);
-            --border:rgba(255,255,255,0.12);
-            --text:rgba(255,255,255,0.92);
-            --muted:rgba(255,255,255,0.65);
-            --shadow:0 20px 60px rgba(0,0,0,0.35);
-            --radius:18px;
-            --pad:20px;
-            --max:760px;
-            --gap:16px;
-            --focus:rgba(255,255,255,0.25);
-        }
-        @media (prefers-color-scheme: light){
-            :root{
-                --bg:#f7f7fb;
-                --panel:rgba(0,0,0,0.04);
-                --border:rgba(0,0,0,0.10);
-                --text:rgba(0,0,0,0.88);
-                --muted:rgba(0,0,0,0.62);
-                --shadow:0 18px 50px rgba(0,0,0,0.10);
-                --focus:rgba(0,0,0,0.18);
-                --g1: rgba(120,120,255,0.20);
-                --g2: rgba(0,255,200,0.12);
-                --g3: rgba(255,180,0,0.10);
-            }
+        @import url("https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap");
+
+        :root {
+            color-scheme: dark;
+            --line: rgba(255, 255, 255, 0.92);
+            --line-soft: rgba(255, 255, 255, 0.42);
+            --line-width: 2px;
+            --line-soft-width: 1.5px;
+            --menu-width: 430px;
+            --menu-half-width: 215px;
+            --menu-closed-half-height: calc(135px + var(--line-width) + var(--line-width) + var(--line-width));
+            --menu-anchor-bottom: calc(50% - var(--menu-closed-half-height));
+            --identity-gap: clamp(28px, 5vw, 82px);
+            --text: rgba(255, 255, 255, 0.96);
+            --text-soft: rgba(255, 255, 255, 0.7);
+            --surface: rgba(0, 0, 0, 0.08);
+            --surface-active: rgba(255, 255, 255, 0.11);
+            --font: "Geist", "ABC Diatype", "Suisse Int'l", "Neue Haas Grotesk Text", "Aptos", "Avenir Next", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            --mono: "Geist Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         }
 
-        *{ box-sizing:border-box; }
-        html,body{ height:100%; overflow:hidden; }
-        body{
-            margin:0;
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            margin: 0;
+            overflow: hidden;
+            background: #000;
+        }
+
+        body {
+            color: var(--text);
+            font-family: var(--font);
+            font-variant-caps: all-small-caps;
+            font-feature-settings: "smcp" 1, "c2sc" 1;
+            font-size: 16px;
+            line-height: 1.4;
+        }
+
+        button,
+        input,
+        textarea {
+            font: inherit;
+        }
+
+        button {
+            font-variant-caps: inherit;
+            font-feature-settings: inherit;
+        }
+
+        input,
+        textarea {
+            font-variant-caps: normal;
+            font-feature-settings: normal;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+            text-underline-offset: 4px;
+        }
+
+        #shaderCanvas {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            width: 100%;
+            height: 100%;
+            display: block;
+            background: #050505;
+            pointer-events: none;
+        }
+
+        .shader-fallback {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            display: none;
             background:
-                    radial-gradient(1200px 800px at 15% 10%, var(--g1), transparent 60%),
-                    radial-gradient(1000px 700px at 85% 15%, var(--g2), transparent 55%),
-                    radial-gradient(900px 600px at 50% 85%, var(--g3), transparent 55%),
-                    var(--bg);
-            color:var(--text);
-            font-family: system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-            line-height:1.45;
+                repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.07) 0 1px, transparent 1px 72px),
+                repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.05) 0 1px, transparent 1px 72px),
+                #080808;
         }
 
-        a{ color:inherit; text-decoration:none; }
-        a:hover{ text-decoration:underline; text-underline-offset:3px; }
+        .no-webgl .shader-fallback {
+            display: block;
+        }
 
-        .wrap{
-            /* this is the scroll container => scrollbar at far right */
+        .site-shell {
+            position: relative;
+            z-index: 1;
+            width: 100%;
             height: 100vh;
+            height: 100dvh;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        .tone-layer {
+            color: #fff;
+        }
+
+        body[data-tone="invert"] .site-shell,
+        body[data-tone="invert"] .mode-switch {
+            mix-blend-mode: difference;
+        }
+
+        body[data-tone="invert"] {
+            --line: #fff;
+            --line-soft: #fff;
+            --surface: transparent;
+            --surface-active: transparent;
+        }
+
+        .identity {
+            position: absolute;
+            bottom: var(--menu-anchor-bottom);
+            left: calc(50% + var(--menu-half-width) + var(--identity-gap));
+            width: min(430px, calc(50vw - var(--menu-half-width) - var(--identity-gap) - 24px));
+            max-width: 430px;
+            color: #fff;
+        }
+
+        .identity h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+            letter-spacing: 0;
+        }
+
+        .identity p {
+            margin: 8px 0 0;
+            color: rgba(255, 255, 255, 0.78);
+            font-size: 14px;
+            letter-spacing: 0;
+        }
+
+        .menu-column {
+            position: absolute;
+            bottom: var(--menu-anchor-bottom);
+            left: 50%;
+            width: var(--menu-width);
+            transform: translateX(-50%);
+        }
+
+        .menu-frame {
+            max-height: calc(50dvh + var(--menu-closed-half-height) - 24px);
             overflow-y: auto;
-            overflow-x: hidden;
-            -webkit-overflow-scrolling: touch;
-
-            /* keep the background visible behind */
-            text-align: center;
-
-            /* vertical padding for page */
-            padding: 18px 0 max(70px, env(safe-area-inset-bottom));
+            overscroll-behavior: contain;
+            border: var(--line-width) solid var(--line);
+            background: var(--surface);
+            color: #fff;
+            backdrop-filter: blur(1px);
+            -webkit-backdrop-filter: blur(1px);
         }
 
-        .inner{
-            /* centered content column */
-            max-width: var(--max);
-            margin: 0 auto;
-            padding: 34px 18px 0;
+        .menu-section + .menu-section {
+            border-top: var(--line-width) solid var(--line);
         }
 
-
-        header{
-            position: sticky;
-            top: 0;
-            z-index: 10;
-
-            /* keep it readable over the background */
-            background: color-mix(in srgb, var(--bg) 55%, transparent);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-
-            border-bottom: 1px solid var(--border);
-            padding: 18px 0;
-            margin-bottom: 18px;
-        }
-
-        header .inner{
-            /* header content aligns with the rest */
+        .menu-button {
+            width: 100%;
+            min-height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
             padding: 0 18px;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
         }
 
-        .title{ margin:0; }
-        .subtitle{ margin:8px 0 0; }
-
-        .grid{
-            display:grid;
-            grid-template-columns:1fr;
-            gap:var(--gap);
-            justify-items:center;
+        .menu-button:hover,
+        .menu-button:focus-visible,
+        .menu-section.is-active .menu-button {
+            background: var(--surface-active);
+            outline: none;
         }
 
-        section{
-            width:60%;
-            background:var(--panel);
-            border:0px solid var(--border);
-            border-radius:var(--radius);
-            padding:var(--pad);
-            box-shadow:var(--shadow);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            text-align:center;
+        .menu-name {
+            font-size: 18px;
+            font-weight: 500;
+            letter-spacing: 0;
         }
 
-        h2{
-            margin:0 0 12px;
-            font-size:13px;
-            font-weight:650;
-            letter-spacing:0.12em;
-            text-transform:uppercase;
-            color:var(--muted);
+        .menu-index {
+            font-family: var(--mono);
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.72);
         }
 
-        .links{
-            display:flex;
-            flex-wrap:wrap;
-            gap:10px;
-            margin:0;
-            padding:0;
-            list-style:none;
-            justify-content:center;
+        .menu-panel {
+            display: none;
+            border-top: var(--line-soft-width) solid var(--line-soft);
+            padding: 12px 18px 18px;
         }
 
-        .chip{
-            display:inline-flex;
-            align-items:center;
-            gap:10px;
-            padding:10px 12px;
-            border-radius:999px;
-            border:1px solid var(--border);
-            background:rgba(255,255,255,0.04);
-        }
-        @media (prefers-color-scheme: light){
-            .chip{ background:rgba(0,0,0,0.02); }
-        }
-        .chip:hover{
-            border-color:var(--focus);
-            text-decoration:none;
+        .menu-section.is-active .menu-panel {
+            display: block;
         }
 
-        /* Spotify embed */
-        .embed{
-            border-radius:14px;
-            overflow:hidden;
-            border:1px solid var(--border);
-            margin-top: 12px;
-        }
-        .embed iframe{
-            display:block;
-            width:100%;
-            height:352px;
-            border:0;
+        .link-list {
+            display: grid;
+            gap: 8px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
         }
 
-        /* Contact */
-        form{
-            display:grid;
-            gap:12px;
-            justify-items:center;
-        }
-        label{
-            font-size:13px;
-            color:var(--muted);
-        }
-        input,textarea,button{
-            font:inherit;
-            border-radius:12px;
-            border:1px solid var(--border);
-            background:rgba(255,255,255,0.04);
-            color:var(--text);
-            padding:10px 12px;
-            outline:none;
-            width:min(520px, 100%);
-        }
-        @media (prefers-color-scheme: light){
-            input,textarea,button{ background:rgba(0,0,0,0.02); }
-        }
-        textarea{ min-height:120px; resize:vertical; }
-        input:focus,textarea:focus,button:focus{ border-color:var(--focus); }
-
-        button{
-            cursor:pointer;
-            width:auto;
-            padding:10px 14px;
-            justify-self:center;
-        }
-        button:hover{ border-color:var(--focus); }
-
-        footer{
-            margin-top:22px;
-            color:var(--muted);
-            font-size:12px;
+        .link-list a,
+        .video-link,
+        .contact-form button {
+            width: 100%;
+            min-height: 38px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            padding: 8px 0;
+            border: 0;
+            border-bottom: var(--line-soft-width) solid rgba(255, 255, 255, 0.42);
+            border-radius: 0;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            text-align: left;
         }
 
-        /* YouTube modal */
+        .link-list a:hover,
+        .video-link:hover,
+        .contact-form button:hover,
+        .link-list a:focus-visible,
+        .video-link:focus-visible,
+        .contact-form button:focus-visible {
+            border-bottom-color: #fff;
+            outline: none;
+            text-decoration: none;
+        }
+
+        .link-list span,
+        .video-link span,
+        .contact-form button span {
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.66);
+        }
+
+        .contact-form {
+            display: grid;
+            gap: 12px;
+        }
+
+        .field {
+            display: grid;
+            gap: 5px;
+        }
+
+        .field label {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .field input,
+        .field textarea {
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.55);
+            border-radius: 0;
+            background: rgba(0, 0, 0, 0.08);
+            color: #fff;
+            padding: 9px 10px;
+            outline: none;
+        }
+
+        body[data-tone="invert"] .link-list a,
+        body[data-tone="invert"] .video-link,
+        body[data-tone="invert"] .contact-form button,
+        body[data-tone="invert"] .field input,
+        body[data-tone="invert"] .field textarea {
+            border-color: #fff;
+        }
+
+        body[data-tone="invert"] .menu-index,
+        body[data-tone="invert"] .identity p,
+        body[data-tone="invert"] .link-list span,
+        body[data-tone="invert"] .video-link span,
+        body[data-tone="invert"] .contact-form button span,
+        body[data-tone="invert"] .field label {
+            color: #fff;
+        }
+
+        body[data-tone="invert"] .field input,
+        body[data-tone="invert"] .field textarea {
+            background: transparent;
+        }
+
+        .field input:focus,
+        .field textarea:focus {
+            border-color: #fff;
+        }
+
+        .field textarea {
+            min-height: 98px;
+            resize: vertical;
+        }
+
+        .mode-switch {
+            position: fixed;
+            bottom: var(--menu-anchor-bottom);
+            right: calc(50% + var(--menu-half-width) + var(--identity-gap));
+            z-index: 2;
+            display: grid;
+            width: 42px;
+            height: 42px;
+            place-items: center;
+            color: #fff;
+        }
+
+        .tone-toggle {
+            width: 100%;
+            height: 100%;
+            border: 0;
+            border-radius: 0;
+            background: transparent;
+            color: #fff;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            padding: 0;
+        }
+
+        .tone-toggle svg {
+            width: 22px;
+            height: 22px;
+            display: block;
+            fill: none;
+            stroke: currentColor;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-width: 1.9;
+        }
+
+        .tone-toggle:hover,
+        .tone-toggle:focus-visible {
+            outline: 0;
+            opacity: 0.72;
+        }
+
         .modal {
             position: fixed;
             inset: 0;
+            z-index: 4;
             display: none;
             align-items: center;
             justify-content: center;
-            padding: 18px;
-            z-index: 9999;
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
+            padding: 24px;
+            background: rgba(0, 0, 0, 0.72);
         }
-        .modal.open { display: flex; }
 
-        .modal-card {
-            width: min(980px, 100%);
-            border-radius: 18px;
-            border: 1px solid var(--border);
-            background: rgba(10,10,12,0.55);
-            box-shadow: var(--shadow);
-            overflow: hidden;
+        .modal.open {
+            display: flex;
         }
-        @media (prefers-color-scheme: light){
-            .modal-card { background: rgba(255,255,255,0.75); }
+
+        .modal-panel {
+            width: min(980px, 100%);
+            border: 1px solid rgba(255, 255, 255, 0.86);
+            background: #050505;
+            color: #fff;
         }
 
         .modal-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 10px;
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border);
+            gap: 16px;
+            min-height: 42px;
+            padding: 0 12px 0 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.7);
         }
 
-        .modal-title {
+        .modal-bar p {
             margin: 0;
             font-size: 13px;
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            color: var(--muted);
         }
 
         .modal-close {
-            border: 1px solid var(--border);
-            background: rgba(255,255,255,0.04);
-            color: var(--text);
-            border-radius: 999px;
-            padding: 8px 10px;
+            border: 0;
+            background: transparent;
+            color: #fff;
             cursor: pointer;
+            min-height: 36px;
+            padding: 0 8px;
         }
-        @media (prefers-color-scheme: light){
-            .modal-close { background: rgba(0,0,0,0.02); }
-        }
-        .modal-close:hover { border-color: var(--focus); }
 
         .video-wrap {
             position: relative;
             width: 100%;
             aspect-ratio: 16 / 9;
-            background: rgba(0,0,0,0.25);
+            background: #000;
         }
+
         .video-wrap iframe {
             position: absolute;
             inset: 0;
@@ -276,234 +424,592 @@
             height: 100%;
             border: 0;
         }
+
+        @media (max-width: 980px) {
+            .site-shell {
+                display: grid;
+                grid-template-columns: 1fr;
+                align-content: start;
+                gap: 28px;
+                padding: 26px 18px 96px;
+                overflow-y: auto;
+                overflow-x: hidden;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .identity,
+            .menu-column {
+                position: static;
+                width: 100%;
+                max-width: none;
+                transform: none;
+            }
+
+            .menu-frame {
+                max-height: none;
+                overflow: visible;
+            }
+
+            .menu-name {
+                font-size: 17px;
+            }
+
+            .mode-switch {
+                right: 18px;
+                bottom: 18px;
+                top: auto;
+                transform: none;
+            }
+        }
+
+        @media (max-width: 430px) {
+            .identity h1 {
+                font-size: 23px;
+            }
+
+            .identity p {
+                font-size: 13px;
+            }
+
+            .menu-button {
+                min-height: 55px;
+                padding: 0 16px;
+            }
+
+            .menu-panel {
+                padding: 10px 16px 16px;
+            }
+
+            .link-list a,
+            .video-link,
+            .contact-form button {
+                min-height: 40px;
+            }
+        }
     </style>
 </head>
+<body data-tone="white">
+    <canvas id="shaderCanvas" aria-hidden="true"></canvas>
+    <div class="shader-fallback" aria-hidden="true"></div>
 
-<body>
-<div class="wrap">
-    <header>
-        <h1 class="title">Vadim Nickel</h1>
-        <p class="subtitle">interaction · audio · games · design · creation · research</p>
-    </header>
-
-    <div class="grid">
-        <section>
-            <h2>Games</h2>
-            <ul class="links">
-                <li>
-                    <a class="chip" href="https://videon.github.io/soundgarden/" target="_blank" rel="noopener noreferrer">
-                        <span>Soundgarden</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="chip" href="https://zolarsystems.itch.io/" target="_blank" rel="noopener noreferrer">
-                        <span>zolarsystems itch.io</span>
-                    </a>
-                </li>
-            </ul>
+    <main class="site-shell">
+        <section class="identity tone-layer" aria-label="Identity">
+            <h1>Vadim Nickel</h1>
+            <p>interaction / audio / games / design / creation / research</p>
         </section>
 
-        <section>
-            <h2>Music</h2>
-            <ul class="links">
-                <!-- Bandcamp link added here -->
-                <li>
-                    <a class="chip" href="https://secretstage.bandcamp.com/" target="_blank" rel="noopener noreferrer">
-                        <span>Bandcamp</span>
-                    </a>
-                </li>
-                <li>
-                    <!-- This one opens in an embedded modal -->
-                    <a class="chip js-youtube" href="https://www.youtube.com/watch?v=7uwcUr7bL04" data-youtube-id="7uwcUr7bL04" rel="noopener">
-                        <span>Yesterday/Just Kidding</span>
-                    </a>
-                </li>
-                <li>
-                    <!-- This one opens in an embedded modal -->
-                    <a class="chip js-youtube" href="https://www.youtube.com/watch?v=ym8d5wUpeuU" data-youtube-id="ym8d5wUpeuU" rel="noopener">
-                        <span>Long Island Iced Tea</span>
-                    </a>
-                </li>
-            </ul>
+        <section class="menu-column tone-layer" aria-label="Site menu">
+            <div class="menu-frame">
+                <article class="menu-section is-active" data-menu-index="0">
+                    <button class="menu-button" type="button" aria-expanded="true">
+                        <span class="menu-name">Games</span>
+                        <span class="menu-index">01</span>
+                    </button>
+                    <div class="menu-panel">
+                        <ul class="link-list">
+                            <li><a href="https://videon.github.io/soundgarden/" target="_blank" rel="noopener noreferrer">Soundgarden <span>play</span></a></li>
+                            <li><a href="https://zolarsystems.itch.io/" target="_blank" rel="noopener noreferrer">zolarsystems itch.io <span>itch</span></a></li>
+                        </ul>
+                    </div>
+                </article>
 
-            <div class="embed">
-                <iframe
-                        src="https://open.spotify.com/embed/artist/1d6eoE53vptd9Ur87w5Ra6?utm_source=generator"
-                        allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
-                        loading="lazy"
-                        title="Spotify embed"
-                ></iframe>
+                <article class="menu-section" data-menu-index="1">
+                    <button class="menu-button" type="button" aria-expanded="false">
+                        <span class="menu-name">Music</span>
+                        <span class="menu-index">02</span>
+                    </button>
+                    <div class="menu-panel">
+                        <ul class="link-list">
+                            <li><a href="https://secretstage.bandcamp.com/" target="_blank" rel="noopener noreferrer">Bandcamp <span>listen</span></a></li>
+                            <li><a href="https://open.spotify.com/artist/1d6eoE53vptd9Ur87w5Ra6" target="_blank" rel="noopener noreferrer">Spotify <span>artist</span></a></li>
+                            <li><button class="video-link" type="button" data-youtube-id="7uwcUr7bL04">Yesterday/Just Kidding <span>video</span></button></li>
+                            <li><button class="video-link" type="button" data-youtube-id="ym8d5wUpeuU">Long Island Iced Tea <span>video</span></button></li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="menu-section" data-menu-index="2">
+                    <button class="menu-button" type="button" aria-expanded="false">
+                        <span class="menu-name">More</span>
+                        <span class="menu-index">03</span>
+                    </button>
+                    <div class="menu-panel">
+                        <ul class="link-list">
+                            <li><a href="./p5trix/" rel="noopener">P5Trix <span>web</span></a></li>
+                            <li><button class="video-link" type="button" data-youtube-id="8cn7O_0eubo">Generative Relaxation <span>video</span></button></li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="menu-section" data-menu-index="3">
+                    <button class="menu-button" type="button" aria-expanded="false">
+                        <span class="menu-name">Platforms</span>
+                        <span class="menu-index">04</span>
+                    </button>
+                    <div class="menu-panel">
+                        <ul class="link-list">
+                            <li><a href="https://github.com/videon" target="_blank" rel="noopener noreferrer">GitHub <span>code</span></a></li>
+                            <li><a href="https://www.researchgate.net/profile/Vadim-Nickel" target="_blank" rel="noopener noreferrer">ResearchGate <span>papers</span></a></li>
+                            <li><a href="https://artreach.milieux.ca/artists/cmhbaqujm0001ib042tlrsaiw" target="_blank" rel="noopener noreferrer">ArtReach <span>profile</span></a></li>
+                        </ul>
+                    </div>
+                </article>
+
+                <article class="menu-section" data-menu-index="4">
+                    <button class="menu-button" type="button" aria-expanded="false">
+                        <span class="menu-name">Contact</span>
+                        <span class="menu-index">05</span>
+                    </button>
+                    <div class="menu-panel">
+                        <form class="contact-form" action="https://formspree.io/f/xwpqwbon" method="POST">
+                            <div class="field">
+                                <label for="email">Your email</label>
+                                <input id="email" type="email" name="email" autocomplete="email" required />
+                            </div>
+                            <div class="field">
+                                <label for="message">Your message</label>
+                                <textarea id="message" name="message" required></textarea>
+                            </div>
+                            <button type="submit">Send <span>form</span></button>
+                        </form>
+                    </div>
+                </article>
             </div>
         </section>
+    </main>
 
-        <section>
-            <h2>More</h2>
-            <ul class="links">
-                <li>
-                    <a class="chip" href="./p5trix/" rel="noopener">
-                        <span>P5Trix</span>
-                    </a>
-                </li>
-                <li>
-                    <!-- This one opens in an embedded modal -->
-                    <a class="chip js-youtube" href="https://www.youtube.com/watch?v=8cn7O_0eubo" data-youtube-id="8cn7O_0eubo" rel="noopener">
-                        <span>Generative Relaxation</span>
-                    </a>
-                </li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Platforms</h2>
-            <ul class="links">
-                <li>
-                    <a class="chip" href="https://github.com/videon" rel="noopener">
-                        <span>GitHub</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="chip" href="https://www.researchgate.net/profile/Vadim-Nickel" rel="noopener">
-                        <span>ResearchGate</span>
-                    </a>
-                </li>
-                <li>
-                    <a class="chip" href="https://artreach.milieux.ca/artists/cmhbaqujm0001ib042tlrsaiw" rel="noopener">
-                        <span>ArtReach</span>
-                    </a>
-                </li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>Contact</h2>
-            <form action="https://formspree.io/f/xwpqwbon" method="POST">
-                <div style="width:100%;">
-                    <label for="email">Your email</label><br />
-                    <input id="email" type="email" name="email" autocomplete="email" required />
-                </div>
-
-                <div style="width:100%;">
-                    <label for="message">Your message</label><br />
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-
-                <button type="submit">Send</button>
-            </form>
-        </section>
+    <div class="mode-switch tone-layer" aria-label="Color mode">
+        <button class="tone-toggle" type="button" aria-pressed="false" aria-label="Use inverted UI color" title="Invert UI color">
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                <circle cx="12" cy="12" r="8"></circle>
+                <path d="M12 4a8 8 0 0 1 0 16z" fill="currentColor" stroke="none"></path>
+                <path d="M12 4v16"></path>
+            </svg>
+        </button>
     </div>
 
-    <footer>
-        <span>© <script>document.write(new Date().getFullYear())</script></span>
-    </footer>
-</div>
-
-<!-- YouTube modal -->
-<div class="modal" id="ytModal" aria-hidden="true">
-    <div class="modal-card" role="dialog" aria-modal="true" aria-label="YouTube video">
-        <div class="modal-bar">
-            <p class="modal-title">Video</p>
-            <button class="modal-close" id="ytClose" type="button" aria-label="Close">Close</button>
-        </div>
-        <div class="video-wrap">
-            <iframe
+    <div class="modal" id="ytModal" aria-hidden="true">
+        <div class="modal-panel" role="dialog" aria-modal="true" aria-label="YouTube video">
+            <div class="modal-bar">
+                <p>Video</p>
+                <button class="modal-close" id="ytClose" type="button" aria-label="Close">Close</button>
+            </div>
+            <div class="video-wrap">
+                <iframe
                     id="ytFrame"
                     title="YouTube embed"
                     src=""
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen
-            ></iframe>
+                ></iframe>
+            </div>
         </div>
     </div>
-</div>
 
-<script>
-    const modal = document.getElementById("ytModal");
-    const frame = document.getElementById("ytFrame");
-    const closeBtn = document.getElementById("ytClose");
+    <script>
+        (() => {
+            const sections = Array.from(document.querySelectorAll(".menu-section"));
+            const toneToggle = document.querySelector(".tone-toggle");
+            let selectedTarget = 0;
 
-    function openYoutube(id) {
-        // nocookie + autoplay
-        frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
-        modal.classList.add("open");
-        modal.setAttribute("aria-hidden", "false");
-        // lock background scroll (already hidden overflow in body, but keep it clean)
-        document.body.style.overflow = "hidden";
+            function selectSection(index) {
+                selectedTarget = index;
+                sections.forEach((section, sectionIndex) => {
+                    const isActive = sectionIndex === index;
+                    section.classList.toggle("is-active", isActive);
+                    section.querySelector(".menu-button").setAttribute("aria-expanded", String(isActive));
+                });
+            }
+
+            sections.forEach((section, index) => {
+                const button = section.querySelector(".menu-button");
+                button.addEventListener("click", () => selectSection(index));
+                button.addEventListener("focus", () => selectSection(index));
+                button.addEventListener("pointerenter", () => selectSection(index));
+            });
+
+            function setTone(tone) {
+                const isInvert = tone === "invert";
+
+                document.body.dataset.tone = isInvert ? "invert" : "white";
+                toneToggle.setAttribute("aria-pressed", String(isInvert));
+                toneToggle.setAttribute("aria-label", isInvert ? "Use normal UI color" : "Use inverted UI color");
+                toneToggle.title = isInvert ? "Normal UI color" : "Invert UI color";
+            }
+
+            toneToggle.addEventListener("click", () => {
+                setTone(document.body.dataset.tone === "invert" ? "white" : "invert");
+            });
+
+            setTone(document.body.dataset.tone);
+
+            window.siteShaderState = {
+                getSelected: () => selectedTarget
+            };
+        })();
+    </script>
+
+    <script>
+        (() => {
+            const modal = document.getElementById("ytModal");
+            const frame = document.getElementById("ytFrame");
+            const closeBtn = document.getElementById("ytClose");
+
+            function openYoutube(id) {
+                frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+                modal.classList.add("open");
+                modal.setAttribute("aria-hidden", "false");
+            }
+
+            function closeYoutube() {
+                modal.classList.remove("open");
+                modal.setAttribute("aria-hidden", "true");
+                frame.src = "";
+            }
+
+            document.querySelectorAll(".video-link").forEach((button) => {
+                button.addEventListener("click", () => openYoutube(button.dataset.youtubeId));
+            });
+
+            closeBtn.addEventListener("click", closeYoutube);
+            modal.addEventListener("click", (event) => {
+                if (event.target === modal) closeYoutube();
+            });
+            window.addEventListener("keydown", (event) => {
+                if (event.key === "Escape" && modal.classList.contains("open")) closeYoutube();
+            });
+        })();
+    </script>
+
+    <script>
+        (() => {
+            const canvas = document.getElementById("shaderCanvas");
+            const gl = canvas.getContext("webgl2", {
+                alpha: false,
+                antialias: false,
+                powerPreference: "high-performance"
+            });
+
+            if (!gl) {
+                document.documentElement.classList.add("no-webgl");
+                return;
+            }
+
+            const vertexSource = `#version 300 es
+in vec2 a_position;
+void main() {
+    gl_Position = vec4(a_position, 0.0, 1.0);
+}`;
+
+            const commonSource = `uniform vec2 u_resolution;
+uniform float u_time;
+uniform float u_time_delta;
+uniform int u_frame;
+uniform vec4 u_mouse;
+uniform vec2 u_drag;
+uniform float u_scroll;
+uniform vec4 u_date;
+uniform float u_refresh_rate;
+uniform vec3 u_camera_pos;
+uniform vec3 u_camera_dir;
+uniform sampler2D u_main;
+uniform float u_selected;`;
+
+            const fragmentBody = `// Source visual: https://fragcoord.xyz/s/lpdzzuns
+float sd_sphere(vec3 p, float s)
+{
+    return length(p) - s;
+}
+
+float sd_box(vec3 p, vec3 b)
+{
+    vec3 q = abs(p) - b;
+    return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0);
+}
+
+float sd_round_box(vec3 p, vec3 b, float r)
+{
+    vec3 q = abs(p) - b + r;
+    return length(max(q, 0.0)) + min(max(q.x, max(q.y, q.z)), 0.0) - r;
+}
+
+float sd_hex_prism(vec3 p, vec2 h)
+{
+    const vec3 k = vec3(-0.8660254, 0.5, 0.57735);
+    p = abs(p);
+    p.xy -= 2.0 * min(dot(k.xy, p.xy), 0.0) * k.xy;
+    vec2 d = vec2(
+        length(p.xy - vec2(clamp(p.x, -k.z * h.x, k.z * h.x), h.x)) * sign(p.y - h.x),
+        p.z - h.y
+    );
+    return min(max(d.x, d.y), 0.0) + length(max(d, 0.0));
+}
+
+float smin(float a, float b, float k)
+{
+    float h = clamp(0.5 + 0.5 * (b - a) / k, 0.0, 1.0);
+    return mix(b, a, h) - k * h * (1.0 - h);
+}
+
+mat2 rotate_2d(float angle)
+{
+    float s = sin(angle);
+    float c = cos(angle);
+    return mat2(c, -s, s, c);
+}
+
+vec3 palette(float t)
+{
+    vec3 a = vec3(0.5, 0.5, 0.5);
+    vec3 b = vec3(0.5, 0.5, 0.5);
+    vec3 c = vec3(1.0, 1.0, 0.1);
+    vec3 d = vec3(0.8, 0.9, 0.3);
+    return a + b * cos(6.28318 * (c * t + d));
+}
+
+float remap(float value, float in_min, float in_max, float out_min, float out_max)
+{
+    return out_min + (out_max - out_min) * (value - in_min) / (in_max - in_min);
+}
+
+float map(vec3 p)
+{
+    float selected = u_selected;
+    float orbit = 7.0 + selected * 0.85;
+    vec3 sphere_pos = vec3(
+        sin(u_time * (0.22 + selected * 0.015)) * orbit,
+        sin(u_time * 0.16 + selected) * 0.45,
+        5.0 + selected * 0.26
+    );
+    float sphere = sd_sphere(p - sphere_pos, 2.0 + selected * 0.08);
+
+    vec3 q = p;
+    q.x += (u_resolution.x * 0.5 - u_mouse.x) * 0.001;
+    q.y += (u_resolution.y * 0.5 - u_mouse.y) * 0.001;
+    q.z += u_time * (0.08 + selected * 0.012);
+    q.z *= 0.5;
+    q.xy *= rotate_2d((selected - 2.0) * 0.08 + u_time * 0.035);
+
+    float repeat = mix(0.88, 1.28, fract(selected * 0.31));
+    q = fract(q * repeat) - 0.5;
+
+    float box = sd_hex_prism(q, vec2(0.052 + selected * 0.006, 0.026 + selected * 0.003));
+    return smin(sphere, box, 0.35 + selected * 0.045);
+}
+
+void main()
+{
+    vec2 uv = (gl_FragCoord.xy * 2.0 - u_resolution.xy) / u_resolution.y;
+    vec2 mouse = (u_mouse.xy * 2.0 - u_resolution.xy) / u_resolution.y;
+
+    vec3 ro = vec3(0.0, 0.0, -3.0);
+    vec3 rd = normalize(vec3(uv, 1.0));
+    vec3 col = vec3(0.0);
+
+    float t = 0.0;
+    float menuPulse = 0.5 + 0.5 * sin(u_time * 0.75 + u_selected);
+
+    for (int i = 0; i < 80; i++)
+    {
+        vec3 p = ro + rd * t;
+        p *= remap(
+            sin(u_time * 0.2 + u_selected * 0.17),
+            -1.0,
+            1.0,
+            0.22 + u_selected * 0.018,
+            1.03 + menuPulse * 0.16
+        );
+        p.xy *= rotate_2d(t * sin(u_time * 0.1 + u_selected * 0.09) * (0.038 + u_selected * 0.005));
+
+        float d = map(p);
+        t += d;
+
+        if (d < 0.001) break;
+        if (t > 100.0) break;
+
+        col = palette(t * 0.01 + u_time * 0.01 + u_selected * 0.11) * float(i) / 80.0;
     }
 
-    function closeYoutube() {
-        modal.classList.remove("open");
-        modal.setAttribute("aria-hidden", "true");
-        frame.src = ""; // stop playback
-        document.body.style.overflow = "";
-    }
+    float vignette = smoothstep(1.75, 0.2, length(uv));
+    col *= 0.54 + vignette * 0.34;
+    col = col / (col + vec3(0.42));
+    col = pow(col, vec3(1.05));
+    fragColor = vec4(col, 1.0);
+}`;
 
-    document.querySelectorAll(".js-youtube").forEach(a => {
-        a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const id = a.dataset.youtubeId;
-            if (id) openYoutube(id);
-        });
-    });
+            const fragmentSource = `#version 300 es
+precision highp float;
+out vec4 fragColor;
+${commonSource}
+${fragmentBody}`;
 
-    closeBtn.addEventListener("click", closeYoutube);
+            function createShader(type, source) {
+                const shader = gl.createShader(type);
+                gl.shaderSource(shader, source);
+                gl.compileShader(shader);
+                if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                    console.error(gl.getShaderInfoLog(shader));
+                    gl.deleteShader(shader);
+                    return null;
+                }
+                return shader;
+            }
 
-    // click outside card closes
-    modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeYoutube();
-    });
+            function createProgram() {
+                const vertexShader = createShader(gl.VERTEX_SHADER, vertexSource);
+                const fragmentShader = createShader(gl.FRAGMENT_SHADER, fragmentSource);
+                if (!vertexShader || !fragmentShader) return null;
 
-    // ESC closes
-    window.addEventListener("keydown", (e) => {
-        if (e.key === "Escape" && modal.classList.contains("open")) closeYoutube();
-    });
-</script>
-<script>
-    const ANIMATE = true;
+                const program = gl.createProgram();
+                gl.attachShader(program, vertexShader);
+                gl.attachShader(program, fragmentShader);
+                gl.linkProgram(program);
 
-    const root = document.documentElement;
+                gl.deleteShader(vertexShader);
+                gl.deleteShader(fragmentShader);
 
-    // palette ranges (HSL)
-    function rand(min, max) { return Math.random() * (max - min) + min; }
-    function hsla(h, s, l, a) { return `hsla(${h} ${s}% ${l}% / ${a})`; }
+                if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+                    console.error(gl.getProgramInfoLog(program));
+                    gl.deleteProgram(program);
+                    return null;
+                }
+                return program;
+            }
 
-    function randomStops() {
-        // pick three hues spaced out a bit for harmony
-        const base = rand(0, 360);
-        const h1 = (base + rand(-20, 20) + 360) % 360;
-        const h2 = (base + rand(90, 150)) % 360;
-        const h3 = (base + rand(210, 270)) % 360;
+            const program = createProgram();
+            if (!program) {
+                document.documentElement.classList.add("no-webgl");
+                return;
+            }
 
-        // gently varied saturation/lightness/alpha
-        root.style.setProperty("--g1", hsla(h1, rand(55, 85), rand(55, 70), rand(0.10, 0.24)));
-        root.style.setProperty("--g2", hsla(h2, rand(45, 80), rand(45, 65), rand(0.08, 0.18)));
-        root.style.setProperty("--g3", hsla(h3, rand(45, 80), rand(50, 68), rand(0.08, 0.16)));
-    }
+            const positions = new Float32Array([
+                -1, -1,
+                 1, -1,
+                -1,  1,
+                -1,  1,
+                 1, -1,
+                 1,  1
+            ]);
 
-    randomStops();
+            const buffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+            gl.bufferData(gl.ARRAY_BUFFER, positions, gl.STATIC_DRAW);
 
-    if (ANIMATE) {
-        // drift hues over time
-        let t = 0;
-        function tick() {
-            t += 0.003; // speed
+            const positionLocation = gl.getAttribLocation(program, "a_position");
+            const uniforms = {
+                resolution: gl.getUniformLocation(program, "u_resolution"),
+                time: gl.getUniformLocation(program, "u_time"),
+                timeDelta: gl.getUniformLocation(program, "u_time_delta"),
+                frame: gl.getUniformLocation(program, "u_frame"),
+                mouse: gl.getUniformLocation(program, "u_mouse"),
+                drag: gl.getUniformLocation(program, "u_drag"),
+                scroll: gl.getUniformLocation(program, "u_scroll"),
+                date: gl.getUniformLocation(program, "u_date"),
+                refreshRate: gl.getUniformLocation(program, "u_refresh_rate"),
+                cameraPos: gl.getUniformLocation(program, "u_camera_pos"),
+                cameraDir: gl.getUniformLocation(program, "u_camera_dir"),
+                selected: gl.getUniformLocation(program, "u_selected")
+            };
 
-            // move hues/alphas
-            const h1 = ( (Math.sin(t * 1.00) * 35) + 210 ) % 360;
-            const h2 = ( (Math.sin(t * 0.77 + 1.6) * 45) + 140 ) % 360;
-            const h3 = ( (Math.sin(t * 0.63 + 3.2) * 55) +  40 ) % 360;
+            let dpr = 1;
+            let width = 1;
+            let height = 1;
+            let frame = 0;
+            let startTime = performance.now();
+            let lastTime = startTime;
+            let selected = 0;
+            let scroll = 0;
+            const mouse = [0, 0, -1, -1];
+            const drag = [0, 0];
+            const clickStart = [0, 0];
 
-            const a1 = 0.18 + 0.06 * Math.sin(t * 0.9);
-            const a2 = 0.12 + 0.05 * Math.sin(t * 0.8 + 2.1);
-            const a3 = 0.10 + 0.04 * Math.sin(t * 0.7 + 4.2);
+            function resize() {
+                dpr = Math.min(window.devicePixelRatio || 1, 2);
+                width = Math.max(1, Math.floor(window.innerWidth * dpr));
+                height = Math.max(1, Math.floor(window.innerHeight * dpr));
+                canvas.width = width;
+                canvas.height = height;
+                gl.viewport(0, 0, width, height);
+                if (mouse[0] === 0 && mouse[1] === 0) {
+                    mouse[0] = width * 0.5;
+                    mouse[1] = height * 0.5;
+                }
+            }
 
-            root.style.setProperty("--g1", hsla(h1, 75, 62, a1.toFixed(3)));
-            root.style.setProperty("--g2", hsla(h2, 70, 58, a2.toFixed(3)));
-            root.style.setProperty("--g3", hsla(h3, 70, 60, a3.toFixed(3)));
+            function pointerPosition(event) {
+                const rect = canvas.getBoundingClientRect();
+                return [
+                    (event.clientX - rect.left) * dpr,
+                    (rect.bottom - event.clientY) * dpr
+                ];
+            }
 
-            requestAnimationFrame(tick);
-        }
-        requestAnimationFrame(tick);
-    }
-</script>
+            window.addEventListener("resize", resize);
+            window.addEventListener("pointermove", (event) => {
+                const position = pointerPosition(event);
+                mouse[0] = position[0];
+                mouse[1] = position[1];
+                if (mouse[2] >= 0.0) {
+                    drag[0] = position[0] - clickStart[0];
+                    drag[1] = position[1] - clickStart[1];
+                }
+            }, { passive: true });
+
+            window.addEventListener("pointerdown", (event) => {
+                const position = pointerPosition(event);
+                mouse[0] = position[0];
+                mouse[1] = position[1];
+                mouse[2] = position[0];
+                mouse[3] = position[1];
+                clickStart[0] = position[0];
+                clickStart[1] = position[1];
+            }, { passive: true });
+
+            window.addEventListener("pointerup", () => {
+                mouse[2] = -Math.abs(mouse[2]);
+                mouse[3] = -Math.abs(mouse[3]);
+            }, { passive: true });
+
+            window.addEventListener("wheel", (event) => {
+                scroll += event.deltaY * -0.001;
+            }, { passive: true });
+
+            function render(now) {
+                const time = (now - startTime) * 0.001;
+                const delta = Math.min(0.1, (now - lastTime) * 0.001);
+                lastTime = now;
+
+                const target = window.siteShaderState ? window.siteShaderState.getSelected() : 0;
+                selected += (target - selected) * 0.08;
+
+                const date = new Date();
+                const seconds = date.getHours() * 3600 + date.getMinutes() * 60 + date.getSeconds() + date.getMilliseconds() / 1000;
+
+                gl.useProgram(program);
+                gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
+                gl.enableVertexAttribArray(positionLocation);
+                gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+                gl.uniform2f(uniforms.resolution, width, height);
+                gl.uniform1f(uniforms.time, time);
+                gl.uniform1f(uniforms.timeDelta, delta);
+                gl.uniform1i(uniforms.frame, frame++);
+                gl.uniform4f(uniforms.mouse, mouse[0], mouse[1], mouse[2], mouse[3]);
+                gl.uniform2f(uniforms.drag, drag[0], drag[1]);
+                gl.uniform1f(uniforms.scroll, scroll);
+                gl.uniform4f(uniforms.date, date.getFullYear(), date.getMonth() + 1, date.getDate(), seconds);
+                gl.uniform1f(uniforms.refreshRate, 60);
+                gl.uniform3f(uniforms.cameraPos, 0, 0, -3);
+                gl.uniform3f(uniforms.cameraDir, 0, 0, 1);
+                gl.uniform1f(uniforms.selected, selected);
+
+                gl.drawArrays(gl.TRIANGLES, 0, 6);
+                requestAnimationFrame(render);
+            }
+
+            resize();
+            requestAnimationFrame(render);
+        })();
+    </script>
 </body>
 </html>
