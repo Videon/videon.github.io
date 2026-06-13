@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Videon CMS</title>
+  <link rel="stylesheet" href="admin.css" />
+</head>
+<body>
+  <main class="cms-shell">
+    <header class="topbar">
+      <div>
+        <h1>Videon CMS</h1>
+        <p id="status">Loading content...</p>
+      </div>
+      <nav>
+        <a href="/site/" target="_blank" rel="noopener noreferrer">Preview</a>
+        <button id="saveButton" type="button">Save</button>
+      </nav>
+    </header>
+
+    <div class="feature-tabs" role="tablist" aria-label="Website features">
+      <button class="feature-tab is-active" id="tab-content" type="button" role="tab" aria-selected="true" aria-controls="panel-content" data-tab="content">Content</button>
+      <button class="feature-tab" id="tab-display" type="button" role="tab" aria-selected="false" aria-controls="panel-display" data-tab="display">Display</button>
+      <button class="feature-tab" id="tab-shader" type="button" role="tab" aria-selected="false" aria-controls="panel-shader" data-tab="shader">Shader</button>
+    </div>
+
+    <div class="tab-panel is-active" id="panel-content" role="tabpanel" aria-labelledby="tab-content">
+      <section class="panel" aria-labelledby="identityHeading">
+        <h2 id="identityHeading">Identity</h2>
+        <div class="grid two">
+          <label>Name <input id="identityName" type="text" /></label>
+          <label>Subtitle <input id="identitySubtitle" type="text" /></label>
+        </div>
+        <label>Description <textarea id="identityDescription" rows="3"></textarea></label>
+      </section>
+
+      <section class="panel" aria-labelledby="sectionsHeading">
+        <div class="panel-title">
+          <h2 id="sectionsHeading">Menu Sections</h2>
+          <button id="addSection" type="button">Add Section</button>
+        </div>
+        <div id="sectionsEditor" class="stack"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="portfolioHeading">
+        <div class="panel-title">
+          <h2 id="portfolioHeading">Portfolio</h2>
+          <button id="addPortfolioItem" type="button">Add Work</button>
+        </div>
+        <label>Section Title <input id="portfolioTitle" type="text" /></label>
+        <div id="portfolioEditor" class="stack"></div>
+      </section>
+
+      <section class="panel" aria-labelledby="contactHeading">
+        <h2 id="contactHeading">Contact</h2>
+        <div class="grid two">
+          <label>Section Title <input id="contactTitle" type="text" /></label>
+          <label>Form Action <input id="contactFormAction" type="text" /></label>
+          <label>Email Label <input id="contactEmailLabel" type="text" /></label>
+          <label>Message Label <input id="contactMessageLabel" type="text" /></label>
+          <label>Submit Label <input id="contactSubmitLabel" type="text" /></label>
+          <label>Submit Meta <input id="contactSubmitMeta" type="text" /></label>
+        </div>
+      </section>
+    </div>
+
+    <div class="tab-panel" id="panel-display" role="tabpanel" aria-labelledby="tab-display" hidden>
+      <section class="panel" aria-labelledby="displayHeading">
+        <h2 id="displayHeading">Typography</h2>
+        <div class="grid two">
+          <label>Font Preset
+            <select id="displayFontPreset">
+              <option value="geist">Geist</option>
+              <option value="grotesk">Modern Grotesk Stack</option>
+              <option value="mono">Geist Mono</option>
+              <option value="serif">Editorial Serif Stack</option>
+              <option value="system">System Sans</option>
+              <option value="custom">Custom Stack</option>
+            </select>
+          </label>
+          <label id="customFontWrap">Custom Font Stack <input id="displayCustomFontStack" type="text" /></label>
+        </div>
+        <div id="displayFontSizeControl"></div>
+      </section>
+    </div>
+
+    <div class="tab-panel" id="panel-shader" role="tabpanel" aria-labelledby="tab-shader" hidden>
+      <section class="panel" aria-labelledby="shaderHeading">
+        <h2 id="shaderHeading">Background Shader</h2>
+        <div class="grid two">
+          <div id="shaderSpeedControl"></div>
+          <div id="shaderIntensityControl"></div>
+          <div id="shaderMenuReactivityControl"></div>
+          <div id="shaderMouseReactivityControl"></div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

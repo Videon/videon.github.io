@@ -16,13 +16,15 @@
             --line-soft-width: 1.5px;
             --menu-width: 430px;
             --menu-half-width: 215px;
-            --menu-closed-half-height: calc(135px + var(--line-width) + var(--line-width) + var(--line-width));
+            --menu-closed-half-height: 169px;
             --menu-anchor-bottom: calc(50% - var(--menu-closed-half-height));
             --identity-gap: clamp(28px, 5vw, 82px);
             --text: rgba(255, 255, 255, 0.96);
             --text-soft: rgba(255, 255, 255, 0.7);
             --surface: rgba(0, 0, 0, 0.08);
             --surface-active: rgba(255, 255, 255, 0.11);
+            --site-font-size: 16px;
+            --font-scale: 1;
             --font: "Geist", "ABC Diatype", "Suisse Int'l", "Neue Haas Grotesk Text", "Aptos", "Avenir Next", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             --mono: "Geist Mono", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
         }
@@ -45,7 +47,7 @@
             font-family: var(--font);
             font-variant-caps: all-small-caps;
             font-feature-settings: "smcp" 1, "c2sc" 1;
-            font-size: 16px;
+            font-size: var(--site-font-size);
             line-height: 1.4;
         }
 
@@ -139,7 +141,7 @@
 
         .identity h1 {
             margin: 0;
-            font-size: 24px;
+            font-size: calc(24px * var(--font-scale));
             font-weight: 500;
             letter-spacing: 0;
         }
@@ -147,7 +149,7 @@
         .identity p {
             margin: 8px 0 0;
             color: rgba(255, 255, 255, 0.78);
-            font-size: 14px;
+            font-size: calc(14px * var(--font-scale));
             letter-spacing: 0;
         }
 
@@ -198,14 +200,14 @@
         }
 
         .menu-name {
-            font-size: 18px;
+            font-size: calc(18px * var(--font-scale));
             font-weight: 500;
             letter-spacing: 0;
         }
 
         .menu-index {
             font-family: var(--mono);
-            font-size: 12px;
+            font-size: calc(12px * var(--font-scale));
             color: rgba(255, 255, 255, 0.72);
         }
 
@@ -229,6 +231,7 @@
 
         .link-list a,
         .video-link,
+        .portfolio-link,
         .contact-form button {
             width: 100%;
             min-height: 38px;
@@ -248,9 +251,11 @@
 
         .link-list a:hover,
         .video-link:hover,
+        .portfolio-link:hover,
         .contact-form button:hover,
         .link-list a:focus-visible,
         .video-link:focus-visible,
+        .portfolio-link:focus-visible,
         .contact-form button:focus-visible {
             border-bottom-color: #fff;
             outline: none;
@@ -259,8 +264,9 @@
 
         .link-list span,
         .video-link span,
+        .portfolio-link span,
         .contact-form button span {
-            font-size: 13px;
+            font-size: calc(13px * var(--font-scale));
             color: rgba(255, 255, 255, 0.66);
         }
 
@@ -275,7 +281,7 @@
         }
 
         .field label {
-            font-size: 12px;
+            font-size: calc(12px * var(--font-scale));
             color: rgba(255, 255, 255, 0.7);
         }
 
@@ -292,6 +298,7 @@
 
         body[data-tone="invert"] .link-list a,
         body[data-tone="invert"] .video-link,
+        body[data-tone="invert"] .portfolio-link,
         body[data-tone="invert"] .contact-form button,
         body[data-tone="invert"] .field input,
         body[data-tone="invert"] .field textarea {
@@ -302,6 +309,7 @@
         body[data-tone="invert"] .identity p,
         body[data-tone="invert"] .link-list span,
         body[data-tone="invert"] .video-link span,
+        body[data-tone="invert"] .portfolio-link span,
         body[data-tone="invert"] .contact-form button span,
         body[data-tone="invert"] .field label {
             color: #fff;
@@ -398,7 +406,7 @@
 
         .modal-bar p {
             margin: 0;
-            font-size: 13px;
+            font-size: calc(13px * var(--font-scale));
         }
 
         .modal-close {
@@ -410,18 +418,41 @@
             padding: 0 8px;
         }
 
-        .video-wrap {
-            position: relative;
+        .modal-body {
+            display: grid;
+            gap: 14px;
+            padding: 16px;
+        }
+
+        .portfolio-modal-meta,
+        .modal-body a {
+            margin: 0;
+            color: rgba(255, 255, 255, 0.72);
+            font-size: calc(13px * var(--font-scale));
+        }
+
+        .modal-body a {
+            justify-self: start;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .media-wrap {
             width: 100%;
-            aspect-ratio: 16 / 9;
             background: #000;
         }
 
-        .video-wrap iframe {
-            position: absolute;
-            inset: 0;
+        .media-wrap img,
+        .media-wrap video {
+            display: block;
             width: 100%;
-            height: 100%;
+            max-height: 62vh;
+            object-fit: contain;
+        }
+
+        .media-wrap iframe {
+            display: block;
+            width: 100%;
+            aspect-ratio: 16 / 9;
             border: 0;
         }
 
@@ -451,7 +482,7 @@
             }
 
             .menu-name {
-                font-size: 17px;
+                font-size: calc(17px * var(--font-scale));
             }
 
             .mode-switch {
@@ -464,11 +495,11 @@
 
         @media (max-width: 430px) {
             .identity h1 {
-                font-size: 23px;
+                font-size: calc(23px * var(--font-scale));
             }
 
             .identity p {
-                font-size: 13px;
+                font-size: calc(13px * var(--font-scale));
             }
 
             .menu-button {
@@ -482,6 +513,7 @@
 
             .link-list a,
             .video-link,
+            .portfolio-link,
             .contact-form button {
                 min-height: 40px;
             }
@@ -494,87 +526,12 @@
 
     <main class="site-shell">
         <section class="identity tone-layer" aria-label="Identity">
-            <h1>Vadim Nickel</h1>
-            <p>interaction / audio / games / design / creation / research</p>
+            <h1 id="identityName">Vadim Nickel</h1>
+            <p id="identitySubtitle">interaction / audio / games / design / creation / research</p>
         </section>
 
         <section class="menu-column tone-layer" aria-label="Site menu">
-            <div class="menu-frame">
-                <article class="menu-section is-active" data-menu-index="0">
-                    <button class="menu-button" type="button" aria-expanded="true">
-                        <span class="menu-name">Games</span>
-                        <span class="menu-index">01</span>
-                    </button>
-                    <div class="menu-panel">
-                        <ul class="link-list">
-                            <li><a href="https://videon.github.io/soundgarden/" target="_blank" rel="noopener noreferrer">Soundgarden <span>play</span></a></li>
-                            <li><a href="https://zolarsystems.itch.io/" target="_blank" rel="noopener noreferrer">zolarsystems itch.io <span>itch</span></a></li>
-                        </ul>
-                    </div>
-                </article>
-
-                <article class="menu-section" data-menu-index="1">
-                    <button class="menu-button" type="button" aria-expanded="false">
-                        <span class="menu-name">Music</span>
-                        <span class="menu-index">02</span>
-                    </button>
-                    <div class="menu-panel">
-                        <ul class="link-list">
-                            <li><a href="https://secretstage.bandcamp.com/" target="_blank" rel="noopener noreferrer">Bandcamp <span>listen</span></a></li>
-                            <li><a href="https://open.spotify.com/artist/1d6eoE53vptd9Ur87w5Ra6" target="_blank" rel="noopener noreferrer">Spotify <span>artist</span></a></li>
-                            <li><button class="video-link" type="button" data-youtube-id="7uwcUr7bL04">Yesterday/Just Kidding <span>video</span></button></li>
-                            <li><button class="video-link" type="button" data-youtube-id="ym8d5wUpeuU">Long Island Iced Tea <span>video</span></button></li>
-                        </ul>
-                    </div>
-                </article>
-
-                <article class="menu-section" data-menu-index="2">
-                    <button class="menu-button" type="button" aria-expanded="false">
-                        <span class="menu-name">More</span>
-                        <span class="menu-index">03</span>
-                    </button>
-                    <div class="menu-panel">
-                        <ul class="link-list">
-                            <li><a href="./p5trix/" rel="noopener">P5Trix <span>web</span></a></li>
-                            <li><button class="video-link" type="button" data-youtube-id="8cn7O_0eubo">Generative Relaxation <span>video</span></button></li>
-                        </ul>
-                    </div>
-                </article>
-
-                <article class="menu-section" data-menu-index="3">
-                    <button class="menu-button" type="button" aria-expanded="false">
-                        <span class="menu-name">Platforms</span>
-                        <span class="menu-index">04</span>
-                    </button>
-                    <div class="menu-panel">
-                        <ul class="link-list">
-                            <li><a href="https://github.com/videon" target="_blank" rel="noopener noreferrer">GitHub <span>code</span></a></li>
-                            <li><a href="https://www.researchgate.net/profile/Vadim-Nickel" target="_blank" rel="noopener noreferrer">ResearchGate <span>papers</span></a></li>
-                            <li><a href="https://artreach.milieux.ca/artists/cmhbaqujm0001ib042tlrsaiw" target="_blank" rel="noopener noreferrer">ArtReach <span>profile</span></a></li>
-                        </ul>
-                    </div>
-                </article>
-
-                <article class="menu-section" data-menu-index="4">
-                    <button class="menu-button" type="button" aria-expanded="false">
-                        <span class="menu-name">Contact</span>
-                        <span class="menu-index">05</span>
-                    </button>
-                    <div class="menu-panel">
-                        <form class="contact-form" action="https://formspree.io/f/xwpqwbon" method="POST">
-                            <div class="field">
-                                <label for="email">Your email</label>
-                                <input id="email" type="email" name="email" autocomplete="email" required />
-                            </div>
-                            <div class="field">
-                                <label for="message">Your message</label>
-                                <textarea id="message" name="message" required></textarea>
-                            </div>
-                            <button type="submit">Send <span>form</span></button>
-                        </form>
-                    </div>
-                </article>
-            </div>
+            <div class="menu-frame" id="menuFrame"></div>
         </section>
     </main>
 
@@ -589,30 +546,352 @@
     </div>
 
     <div class="modal" id="ytModal" aria-hidden="true">
-        <div class="modal-panel" role="dialog" aria-modal="true" aria-label="YouTube video">
+        <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
             <div class="modal-bar">
-                <p>Video</p>
+                <p id="modalTitle">Media</p>
                 <button class="modal-close" id="ytClose" type="button" aria-label="Close">Close</button>
             </div>
-            <div class="video-wrap">
-                <iframe
-                    id="ytFrame"
-                    title="YouTube embed"
-                    src=""
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                ></iframe>
-            </div>
+            <div class="modal-body" id="modalBody"></div>
         </div>
     </div>
 
     <script>
         (() => {
-            const sections = Array.from(document.querySelectorAll(".menu-section"));
+            const DEFAULT_CONTENT = {
+                identity: {
+                    name: "Vadim Nickel",
+                    subtitle: "interaction / audio / games / design / creation / research",
+                    description: "Interaction, audio, games, design, creation, and research."
+                },
+                display: {
+                    fontPreset: "geist",
+                    customFontStack: "",
+                    fontSize: 16
+                },
+                shader: {
+                    speed: 1,
+                    intensity: 1,
+                    menuReactivity: 1,
+                    mouseReactivity: 1
+                },
+                menuSections: [
+                    {
+                        id: "games",
+                        title: "Games",
+                        items: [
+                            { type: "link", label: "Soundgarden", meta: "play", href: "https://videon.github.io/soundgarden/", newTab: true },
+                            { type: "link", label: "zolarsystems itch.io", meta: "itch", href: "https://zolarsystems.itch.io/", newTab: true }
+                        ]
+                    },
+                    {
+                        id: "music",
+                        title: "Music",
+                        items: [
+                            { type: "link", label: "Bandcamp", meta: "listen", href: "https://secretstage.bandcamp.com/", newTab: true },
+                            { type: "link", label: "Spotify", meta: "artist", href: "https://open.spotify.com/artist/1d6eoE53vptd9Ur87w5Ra6", newTab: true },
+                            { type: "video", label: "Yesterday/Just Kidding", meta: "video", video: "7uwcUr7bL04" },
+                            { type: "video", label: "Long Island Iced Tea", meta: "video", video: "ym8d5wUpeuU" }
+                        ]
+                    },
+                    {
+                        id: "more",
+                        title: "More",
+                        items: [
+                            { type: "link", label: "P5Trix", meta: "web", href: "./p5trix/", newTab: false },
+                            { type: "video", label: "Generative Relaxation", meta: "video", video: "8cn7O_0eubo" }
+                        ]
+                    },
+                    {
+                        id: "platforms",
+                        title: "Platforms",
+                        items: [
+                            { type: "link", label: "GitHub", meta: "code", href: "https://github.com/videon", newTab: true },
+                            { type: "link", label: "ResearchGate", meta: "papers", href: "https://www.researchgate.net/profile/Vadim-Nickel", newTab: true },
+                            { type: "link", label: "ArtReach", meta: "profile", href: "https://artreach.milieux.ca/artists/cmhbaqujm0001ib042tlrsaiw", newTab: true }
+                        ]
+                    }
+                ],
+                portfolio: {
+                    title: "Portfolio",
+                    items: [
+                        {
+                            title: "Soundgarden",
+                            year: "",
+                            workType: "Game",
+                            image: "",
+                            video: "",
+                            url: "https://videon.github.io/soundgarden/"
+                        },
+                        {
+                            title: "Generative Relaxation",
+                            year: "",
+                            workType: "Video",
+                            image: "",
+                            video: "8cn7O_0eubo",
+                            url: ""
+                        }
+                    ]
+                },
+                contact: {
+                    title: "Contact",
+                    formAction: "https://formspree.io/f/xwpqwbon",
+                    emailLabel: "Your email",
+                    messageLabel: "Your message",
+                    submitLabel: "Send",
+                    submitMeta: "form"
+                }
+            };
+
+            const FONT_PRESETS = {
+                geist: "\"Geist\", \"ABC Diatype\", \"Suisse Int'l\", \"Neue Haas Grotesk Text\", \"Aptos\", \"Avenir Next\", ui-sans-serif, system-ui, sans-serif",
+                mono: "\"Geist Mono\", \"SFMono-Regular\", Consolas, \"Liberation Mono\", monospace",
+                grotesk: "\"Neue Haas Grotesk Text\", \"Suisse Int'l\", \"Aptos\", \"Avenir Next\", ui-sans-serif, system-ui, sans-serif",
+                serif: "\"Iowan Old Style\", \"Palatino Linotype\", \"Book Antiqua\", Georgia, serif",
+                system: "ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"
+            };
+
+            const contentUrl = "content/site.json";
+            const root = document.documentElement;
+            const menuFrame = document.getElementById("menuFrame");
+            const identityName = document.getElementById("identityName");
+            const identitySubtitle = document.getElementById("identitySubtitle");
             const toneToggle = document.querySelector(".tone-toggle");
+            const modal = document.getElementById("ytModal");
+            const modalTitle = document.getElementById("modalTitle");
+            const modalBody = document.getElementById("modalBody");
+            const closeBtn = document.getElementById("ytClose");
+            const descriptionMeta = document.querySelector('meta[name="description"]');
             let selectedTarget = 0;
+            let renderedSectionCount = 0;
+            let currentPortfolio = [];
+            let shaderSettings = { ...DEFAULT_CONTENT.shader };
+
+            window.siteShaderState = {
+                getSelected: () => selectedTarget,
+                getShaderSettings: () => shaderSettings
+            };
+
+            function array(value) {
+                return Array.isArray(value) ? value : [];
+            }
+
+            function text(value, fallback = "") {
+                return typeof value === "string" ? value : fallback;
+            }
+
+            function createElement(tag, className, textValue) {
+                const element = document.createElement(tag);
+                if (className) element.className = className;
+                if (textValue !== undefined) element.textContent = textValue;
+                return element;
+            }
+
+            function normalizeContent(rawContent) {
+                const raw = rawContent && typeof rawContent === "object" ? rawContent : {};
+                return {
+                    identity: { ...DEFAULT_CONTENT.identity, ...(raw.identity || {}) },
+                    display: { ...DEFAULT_CONTENT.display, ...(raw.display || {}) },
+                    shader: { ...DEFAULT_CONTENT.shader, ...(raw.shader || {}) },
+                    menuSections: Array.isArray(raw.menuSections) ? raw.menuSections : DEFAULT_CONTENT.menuSections,
+                    portfolio: {
+                        ...DEFAULT_CONTENT.portfolio,
+                        ...(raw.portfolio || {}),
+                        items: Array.isArray(raw.portfolio && raw.portfolio.items) ? raw.portfolio.items : DEFAULT_CONTENT.portfolio.items
+                    },
+                    contact: { ...DEFAULT_CONTENT.contact, ...(raw.contact || {}) }
+                };
+            }
+
+            async function loadContent() {
+                try {
+                    const response = await fetch(contentUrl, { cache: "no-store" });
+                    if (!response.ok) throw new Error(`Content request failed: ${response.status}`);
+                    return await response.json();
+                } catch (error) {
+                    console.warn(error);
+                    return DEFAULT_CONTENT;
+                }
+            }
+
+            function twoDigit(value) {
+                return String(value + 1).padStart(2, "0");
+            }
+
+            function syncMenuAnchor(sectionCount) {
+                renderedSectionCount = sectionCount;
+                const rowHeight = window.matchMedia("(max-width: 430px)").matches ? 55 : 54;
+                const lineWidth = parseFloat(getComputedStyle(root).getPropertyValue("--line-width")) || 2;
+                const closedHeight = sectionCount * rowHeight + (sectionCount + 1) * lineWidth;
+                root.style.setProperty("--menu-closed-half-height", `${closedHeight / 2}px`);
+            }
+
+            function numberInRange(value, fallback, min, max) {
+                const number = Number(value);
+                if (!Number.isFinite(number)) return fallback;
+                return Math.min(max, Math.max(min, number));
+            }
+
+            function applyDisplay(display) {
+                const fontSize = numberInRange(display.fontSize, DEFAULT_CONTENT.display.fontSize, 12, 24);
+                const preset = text(display.fontPreset, DEFAULT_CONTENT.display.fontPreset);
+                const fontStack = preset === "custom" && text(display.customFontStack)
+                    ? text(display.customFontStack)
+                    : FONT_PRESETS[preset] || FONT_PRESETS.geist;
+
+                root.style.setProperty("--font", fontStack);
+                root.style.setProperty("--site-font-size", `${fontSize}px`);
+                root.style.setProperty("--font-scale", String(fontSize / DEFAULT_CONTENT.display.fontSize));
+            }
+
+            function applyShader(shader) {
+                shaderSettings = {
+                    speed: numberInRange(shader.speed, DEFAULT_CONTENT.shader.speed, 0, 3),
+                    intensity: numberInRange(shader.intensity, DEFAULT_CONTENT.shader.intensity, 0.2, 2),
+                    menuReactivity: numberInRange(shader.menuReactivity, DEFAULT_CONTENT.shader.menuReactivity, 0, 2),
+                    mouseReactivity: numberInRange(shader.mouseReactivity, DEFAULT_CONTENT.shader.mouseReactivity, 0, 2)
+                };
+            }
+
+            function portfolioMeta(item) {
+                return [text(item.year), text(item.workType)].filter(Boolean).join(" / ");
+            }
+
+            function mediaLabel(item) {
+                const meta = portfolioMeta(item);
+                return meta || "view";
+            }
+
+            function composeSections(content) {
+                const sections = array(content.menuSections).map((section) => ({
+                    kind: "links",
+                    title: text(section.title, "Section"),
+                    items: array(section.items)
+                }));
+
+                const portfolioSection = {
+                    kind: "portfolio",
+                    title: text(content.portfolio.title, "Portfolio"),
+                    items: array(content.portfolio.items)
+                };
+
+                const insertIndex = Math.min(2, sections.length);
+                sections.splice(insertIndex, 0, portfolioSection);
+                sections.push({ kind: "contact", title: text(content.contact.title, "Contact"), contact: content.contact });
+                return sections;
+            }
+
+            function createMenuButton(section, index) {
+                const button = createElement("button", "menu-button");
+                button.type = "button";
+                button.setAttribute("aria-expanded", String(index === 0));
+
+                const name = createElement("span", "menu-name", section.title);
+                const count = createElement("span", "menu-index", twoDigit(index));
+
+                button.append(name, count);
+                return button;
+            }
+
+            function createLinkItem(item) {
+                const li = document.createElement("li");
+                const isVideo = text(item.type) === "video" || text(item.video);
+
+                if (isVideo) {
+                    const button = createElement("button", "video-link");
+                    button.type = "button";
+                    button.dataset.video = text(item.video);
+                    button.append(document.createTextNode(text(item.label, "Video")));
+                    button.append(createElement("span", "", text(item.meta, "video")));
+                    li.append(button);
+                    return li;
+                }
+
+                const link = document.createElement("a");
+                link.href = text(item.href, "#");
+                if (item.newTab !== false) {
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                } else {
+                    link.rel = "noopener";
+                }
+                link.append(document.createTextNode(text(item.label, "Link")));
+                link.append(createElement("span", "", text(item.meta)));
+                li.append(link);
+                return li;
+            }
+
+            function createPortfolioItem(item, index) {
+                const li = document.createElement("li");
+                const button = createElement("button", "portfolio-link");
+                button.type = "button";
+                button.dataset.portfolioIndex = String(index);
+                button.append(document.createTextNode(text(item.title, "Untitled work")));
+                button.append(createElement("span", "", mediaLabel(item)));
+                li.append(button);
+                return li;
+            }
+
+            function createContactForm(contact) {
+                const form = createElement("form", "contact-form");
+                form.action = text(contact.formAction, DEFAULT_CONTENT.contact.formAction);
+                form.method = "POST";
+
+                const emailField = createElement("div", "field");
+                const emailLabel = createElement("label", "", text(contact.emailLabel, "Your email"));
+                emailLabel.htmlFor = "email";
+                const email = document.createElement("input");
+                email.id = "email";
+                email.type = "email";
+                email.name = "email";
+                email.autocomplete = "email";
+                email.required = true;
+                emailField.append(emailLabel, email);
+
+                const messageField = createElement("div", "field");
+                const messageLabel = createElement("label", "", text(contact.messageLabel, "Your message"));
+                messageLabel.htmlFor = "message";
+                const message = document.createElement("textarea");
+                message.id = "message";
+                message.name = "message";
+                message.required = true;
+                messageField.append(messageLabel, message);
+
+                const submit = createElement("button", "", `${text(contact.submitLabel, "Send")} `);
+                submit.type = "submit";
+                submit.append(createElement("span", "", text(contact.submitMeta, "form")));
+                form.append(emailField, messageField, submit);
+                return form;
+            }
+
+            function createPanel(section) {
+                const panel = createElement("div", "menu-panel");
+
+                if (section.kind === "contact") {
+                    panel.append(createContactForm(section.contact));
+                    return panel;
+                }
+
+                const list = createElement("ul", "link-list");
+                if (section.kind === "portfolio") {
+                    currentPortfolio = array(section.items);
+                    currentPortfolio.forEach((item, index) => list.append(createPortfolioItem(item, index)));
+                } else {
+                    array(section.items).forEach((item) => list.append(createLinkItem(item)));
+                }
+                panel.append(list);
+                return panel;
+            }
+
+            function createMenuSection(section, index) {
+                const article = createElement("article", "menu-section");
+                article.dataset.menuIndex = String(index);
+                if (index === 0) article.classList.add("is-active");
+                article.append(createMenuButton(section, index), createPanel(section));
+                return article;
+            }
 
             function selectSection(index) {
+                const sections = Array.from(document.querySelectorAll(".menu-section"));
                 selectedTarget = index;
                 sections.forEach((section, sectionIndex) => {
                     const isActive = sectionIndex === index;
@@ -621,12 +900,138 @@
                 });
             }
 
-            sections.forEach((section, index) => {
-                const button = section.querySelector(".menu-button");
-                button.addEventListener("click", () => selectSection(index));
-                button.addEventListener("focus", () => selectSection(index));
-                button.addEventListener("pointerenter", () => selectSection(index));
-            });
+            function setupMenuInteractions() {
+                const sections = Array.from(document.querySelectorAll(".menu-section"));
+                sections.forEach((section, index) => {
+                    const button = section.querySelector(".menu-button");
+                    button.addEventListener("click", () => selectSection(index));
+                    button.addEventListener("focus", () => selectSection(index));
+                    button.addEventListener("pointerenter", () => selectSection(index));
+                });
+
+                document.querySelectorAll(".video-link").forEach((button) => {
+                    button.addEventListener("click", () => openVideo(button.dataset.video, button.firstChild.textContent));
+                });
+
+                document.querySelectorAll(".portfolio-link").forEach((button) => {
+                    button.addEventListener("click", () => {
+                        const item = currentPortfolio[Number(button.dataset.portfolioIndex)];
+                        if (item) openPortfolio(item);
+                    });
+                });
+            }
+
+            function youtubeId(value) {
+                const input = text(value).trim();
+                if (/^[a-zA-Z0-9_-]{11}$/.test(input)) return input;
+                try {
+                    const url = new URL(input);
+                    if (url.hostname.includes("youtu.be")) return url.pathname.split("/").filter(Boolean)[0] || "";
+                    if (url.hostname.includes("youtube.com")) {
+                        if (url.searchParams.get("v")) return url.searchParams.get("v");
+                        const embedMatch = url.pathname.match(/\/embed\/([a-zA-Z0-9_-]{11})/);
+                        if (embedMatch) return embedMatch[1];
+                    }
+                } catch (error) {
+                    return "";
+                }
+                return "";
+            }
+
+            function createImageMedia(src, title) {
+                const wrap = createElement("div", "media-wrap");
+                const image = document.createElement("img");
+                image.src = src;
+                image.alt = title;
+                image.loading = "lazy";
+                wrap.append(image);
+                return wrap;
+            }
+
+            function createVideoMedia(value, title) {
+                const wrap = createElement("div", "media-wrap");
+                const id = youtubeId(value);
+                if (id) {
+                    const iframe = document.createElement("iframe");
+                    iframe.title = title;
+                    iframe.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
+                    iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share";
+                    iframe.allowFullscreen = true;
+                    wrap.append(iframe);
+                    return wrap;
+                }
+
+                if (/\.(mp4|webm|mov|m4v)$/i.test(value)) {
+                    const video = document.createElement("video");
+                    video.src = value;
+                    video.controls = true;
+                    video.playsInline = true;
+                    wrap.append(video);
+                    return wrap;
+                }
+
+                const link = document.createElement("a");
+                link.href = value;
+                link.target = "_blank";
+                link.rel = "noopener noreferrer";
+                link.textContent = "Open video";
+                wrap.append(link);
+                return wrap;
+            }
+
+            function openModal(title) {
+                modalTitle.textContent = title;
+                modal.classList.add("open");
+                modal.setAttribute("aria-hidden", "false");
+            }
+
+            function openVideo(video, title) {
+                modalBody.replaceChildren(createVideoMedia(video, title || "Video"));
+                openModal(title || "Video");
+            }
+
+            function openPortfolio(item) {
+                modalBody.replaceChildren();
+                const title = text(item.title, "Untitled work");
+                const meta = portfolioMeta(item);
+
+                if (meta) modalBody.append(createElement("p", "portfolio-modal-meta", meta));
+                if (text(item.image)) modalBody.append(createImageMedia(text(item.image), title));
+                if (text(item.video)) modalBody.append(createVideoMedia(text(item.video), title));
+                if (text(item.url)) {
+                    const link = document.createElement("a");
+                    link.href = text(item.url);
+                    link.target = "_blank";
+                    link.rel = "noopener noreferrer";
+                    link.textContent = "Open project";
+                    modalBody.append(link);
+                }
+
+                openModal(title);
+            }
+
+            function closeModal() {
+                modal.classList.remove("open");
+                modal.setAttribute("aria-hidden", "true");
+                modalBody.replaceChildren();
+            }
+
+            function renderSite(rawContent) {
+                const content = normalizeContent(rawContent);
+                const sections = composeSections(content);
+
+                document.title = text(content.identity.name, DEFAULT_CONTENT.identity.name);
+                if (descriptionMeta) descriptionMeta.content = text(content.identity.description, DEFAULT_CONTENT.identity.description);
+                identityName.textContent = text(content.identity.name, DEFAULT_CONTENT.identity.name);
+                identitySubtitle.textContent = text(content.identity.subtitle, DEFAULT_CONTENT.identity.subtitle);
+                applyDisplay(content.display);
+                applyShader(content.shader);
+
+                syncMenuAnchor(sections.length);
+                menuFrame.replaceChildren(...sections.map(createMenuSection));
+                setupMenuInteractions();
+                selectSection(Math.min(selectedTarget, sections.length - 1));
+            }
 
             function setTone(tone) {
                 const isInvert = tone === "invert";
@@ -637,47 +1042,22 @@
                 toneToggle.title = isInvert ? "Normal UI color" : "Invert UI color";
             }
 
+            closeBtn.addEventListener("click", closeModal);
+            modal.addEventListener("click", (event) => {
+                if (event.target === modal) closeModal();
+            });
+            window.addEventListener("keydown", (event) => {
+                if (event.key === "Escape" && modal.classList.contains("open")) closeModal();
+            });
+            window.addEventListener("resize", () => syncMenuAnchor(renderedSectionCount));
+
             toneToggle.addEventListener("click", () => {
                 setTone(document.body.dataset.tone === "invert" ? "white" : "invert");
             });
 
             setTone(document.body.dataset.tone);
-
-            window.siteShaderState = {
-                getSelected: () => selectedTarget
-            };
-        })();
-    </script>
-
-    <script>
-        (() => {
-            const modal = document.getElementById("ytModal");
-            const frame = document.getElementById("ytFrame");
-            const closeBtn = document.getElementById("ytClose");
-
-            function openYoutube(id) {
-                frame.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`;
-                modal.classList.add("open");
-                modal.setAttribute("aria-hidden", "false");
-            }
-
-            function closeYoutube() {
-                modal.classList.remove("open");
-                modal.setAttribute("aria-hidden", "true");
-                frame.src = "";
-            }
-
-            document.querySelectorAll(".video-link").forEach((button) => {
-                button.addEventListener("click", () => openYoutube(button.dataset.youtubeId));
-            });
-
-            closeBtn.addEventListener("click", closeYoutube);
-            modal.addEventListener("click", (event) => {
-                if (event.target === modal) closeYoutube();
-            });
-            window.addEventListener("keydown", (event) => {
-                if (event.key === "Escape" && modal.classList.contains("open")) closeYoutube();
-            });
+            renderSite(DEFAULT_CONTENT);
+            loadContent().then(renderSite);
         })();
     </script>
 
@@ -713,6 +1093,7 @@ uniform float u_refresh_rate;
 uniform vec3 u_camera_pos;
 uniform vec3 u_camera_dir;
 uniform sampler2D u_main;
+uniform float u_intensity;
 uniform float u_selected;`;
 
             const fragmentBody = `// Source visual: https://fragcoord.xyz/s/lpdzzuns
@@ -831,7 +1212,7 @@ void main()
     }
 
     float vignette = smoothstep(1.75, 0.2, length(uv));
-    col *= 0.54 + vignette * 0.34;
+    col *= (0.54 + vignette * 0.34) * u_intensity;
     col = col / (col + vec3(0.42));
     col = pow(col, vec3(1.05));
     fragColor = vec4(col, 1.0);
@@ -908,6 +1289,7 @@ ${fragmentBody}`;
                 refreshRate: gl.getUniformLocation(program, "u_refresh_rate"),
                 cameraPos: gl.getUniformLocation(program, "u_camera_pos"),
                 cameraDir: gl.getUniformLocation(program, "u_camera_dir"),
+                intensity: gl.getUniformLocation(program, "u_intensity"),
                 selected: gl.getUniformLocation(program, "u_selected")
             };
 
@@ -975,7 +1357,12 @@ ${fragmentBody}`;
             }, { passive: true });
 
             function render(now) {
-                const time = (now - startTime) * 0.001;
+                const settings = window.siteShaderState ? window.siteShaderState.getShaderSettings() : {};
+                const speed = Number.isFinite(settings.speed) ? settings.speed : 1;
+                const intensity = Number.isFinite(settings.intensity) ? settings.intensity : 1;
+                const menuReactivity = Number.isFinite(settings.menuReactivity) ? settings.menuReactivity : 1;
+                const mouseReactivity = Number.isFinite(settings.mouseReactivity) ? settings.mouseReactivity : 1;
+                const time = (now - startTime) * 0.001 * speed;
                 const delta = Math.min(0.1, (now - lastTime) * 0.001);
                 lastTime = now;
 
@@ -994,14 +1381,21 @@ ${fragmentBody}`;
                 gl.uniform1f(uniforms.time, time);
                 gl.uniform1f(uniforms.timeDelta, delta);
                 gl.uniform1i(uniforms.frame, frame++);
-                gl.uniform4f(uniforms.mouse, mouse[0], mouse[1], mouse[2], mouse[3]);
+                gl.uniform4f(
+                    uniforms.mouse,
+                    width * 0.5 + (mouse[0] - width * 0.5) * mouseReactivity,
+                    height * 0.5 + (mouse[1] - height * 0.5) * mouseReactivity,
+                    mouse[2],
+                    mouse[3]
+                );
                 gl.uniform2f(uniforms.drag, drag[0], drag[1]);
                 gl.uniform1f(uniforms.scroll, scroll);
                 gl.uniform4f(uniforms.date, date.getFullYear(), date.getMonth() + 1, date.getDate(), seconds);
                 gl.uniform1f(uniforms.refreshRate, 60);
                 gl.uniform3f(uniforms.cameraPos, 0, 0, -3);
                 gl.uniform3f(uniforms.cameraDir, 0, 0, 1);
-                gl.uniform1f(uniforms.selected, selected);
+                gl.uniform1f(uniforms.intensity, intensity);
+                gl.uniform1f(uniforms.selected, selected * menuReactivity);
 
                 gl.drawArrays(gl.TRIANGLES, 0, 6);
                 requestAnimationFrame(render);

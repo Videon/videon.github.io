@@ -1,0 +1,147 @@
+{
+  "identity": {
+    "name": "Vadim Nickel",
+    "subtitle": "interaction / audio / games / design / creation / research",
+    "description": "Interaction, audio, games, design, creation, and research."
+  },
+  "display": {
+    "fontPreset": "geist",
+    "customFontStack": "",
+    "fontSize": 24
+  },
+  "shader": {
+    "speed": 1,
+    "intensity": 1,
+    "menuReactivity": 1,
+    "mouseReactivity": 1
+  },
+  "menuSections": [
+    {
+      "id": "games",
+      "title": "Games",
+      "items": [
+        {
+          "type": "link",
+          "label": "Soundgarden",
+          "meta": "play",
+          "href": "https://videon.github.io/soundgarden/",
+          "newTab": true
+        },
+        {
+          "type": "link",
+          "label": "zolarsystems itch.io",
+          "meta": "itch",
+          "href": "https://zolarsystems.itch.io/",
+          "newTab": true
+        }
+      ]
+    },
+    {
+      "id": "music",
+      "title": "Music",
+      "items": [
+        {
+          "type": "link",
+          "label": "Bandcamp",
+          "meta": "listen",
+          "href": "https://secretstage.bandcamp.com/",
+          "newTab": true
+        },
+        {
+          "type": "link",
+          "label": "Spotify",
+          "meta": "artist",
+          "href": "https://open.spotify.com/artist/1d6eoE53vptd9Ur87w5Ra6",
+          "newTab": true
+        },
+        {
+          "type": "video",
+          "label": "Yesterday/Just Kidding",
+          "meta": "video",
+          "video": "7uwcUr7bL04"
+        },
+        {
+          "type": "video",
+          "label": "Long Island Iced Tea",
+          "meta": "video",
+          "video": "ym8d5wUpeuU"
+        }
+      ]
+    },
+    {
+      "id": "more",
+      "title": "More",
+      "items": [
+        {
+          "type": "link",
+          "label": "P5Trix",
+          "meta": "web",
+          "href": "./p5trix/",
+          "newTab": false
+        },
+        {
+          "type": "video",
+          "label": "Generative Relaxation",
+          "meta": "video",
+          "video": "8cn7O_0eubo"
+        }
+      ]
+    },
+    {
+      "id": "platforms",
+      "title": "Platforms",
+      "items": [
+        {
+          "type": "link",
+          "label": "GitHub",
+          "meta": "code",
+          "href": "https://github.com/videon",
+          "newTab": true
+        },
+        {
+          "type": "link",
+          "label": "ResearchGate",
+          "meta": "papers",
+          "href": "https://www.researchgate.net/profile/Vadim-Nickel",
+          "newTab": true
+        },
+        {
+          "type": "link",
+          "label": "ArtReach",
+          "meta": "profile",
+          "href": "https://artreach.milieux.ca/artists/cmhbaqujm0001ib042tlrsaiw",
+          "newTab": true
+        }
+      ]
+    }
+  ],
+  "portfolio": {
+    "title": "Portfolio",
+    "items": [
+      {
+        "title": "Soundgarden",
+        "year": "",
+        "workType": "Game",
+        "image": "",
+        "video": "",
+        "url": "https://videon.github.io/soundgarden/"
+      },
+      {
+        "title": "Generative Relaxation",
+        "year": "",
+        "workType": "Video",
+        "image": "",
+        "video": "8cn7O_0eubo",
+        "url": ""
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact",
+    "formAction": "https://formspree.io/f/xwpqwbon",
+    "emailLabel": "Your email",
+    "messageLabel": "Your message",
+    "submitLabel": "Send",
+    "submitMeta": "form"
+  }
+}

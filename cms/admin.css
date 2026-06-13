@@ -1,0 +1,281 @@
+:root {
+  color-scheme: dark;
+  --bg: #101112;
+  --panel: #17191b;
+  --line: #34383d;
+  --line-strong: #f4f1e8;
+  --text: #f4f1e8;
+  --muted: #a9adb3;
+  --accent: #8ee6bd;
+  --danger: #ff8f8f;
+  --radius: 6px;
+  font-family: "Geist", "Inter", "Segoe UI", system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button,
+a {
+  min-height: 34px;
+  border: 1px solid var(--line-strong);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 10px;
+  text-decoration: none;
+}
+
+button:hover,
+a:hover,
+button:focus-visible,
+a:focus-visible {
+  background: rgba(255, 255, 255, 0.08);
+  outline: 0;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: #0d0f10;
+  color: var(--text);
+  padding: 8px 9px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin: 0;
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 600;
+}
+
+h2 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.cms-shell {
+  width: min(1180px, 100%);
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  gap: 16px;
+}
+
+.topbar,
+.panel-title,
+.item-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.topbar {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  min-height: 74px;
+  padding: 12px 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+}
+
+.topbar nav {
+  display: flex;
+  gap: 8px;
+}
+
+.feature-tabs {
+  display: flex;
+  gap: 0;
+  border: 1px solid var(--line-strong);
+  width: fit-content;
+}
+
+.feature-tab {
+  border: 0;
+  border-right: 1px solid var(--line-strong);
+  min-width: 112px;
+}
+
+.feature-tab:last-child {
+  border-right: 0;
+}
+
+.feature-tab.is-active {
+  background: var(--line-strong);
+  color: var(--bg);
+}
+
+.tab-panel {
+  display: grid;
+  gap: 16px;
+}
+
+#status {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+#status.is-ok {
+  color: var(--accent);
+}
+
+#status.is-error {
+  color: var(--danger);
+}
+
+.panel {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+}
+
+.grid {
+  display: grid;
+  gap: 12px;
+}
+
+.grid.two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.stack {
+  display: grid;
+  gap: 10px;
+}
+
+.editor-item {
+  display: grid;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.nested-list {
+  display: grid;
+  gap: 8px;
+  padding-left: 12px;
+  border-left: 1px solid var(--line);
+}
+
+.danger {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.compact {
+  width: auto;
+  justify-self: start;
+}
+
+.upload-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: end;
+}
+
+.range-control {
+  display: grid;
+  gap: 8px;
+}
+
+.range-control-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.range-control output {
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+
+input[type="range"] {
+  padding: 0;
+  accent-color: var(--accent);
+}
+
+@media (max-width: 760px) {
+  .cms-shell {
+    padding: 16px;
+  }
+
+  .topbar,
+  .panel-title,
+  .item-title {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .topbar nav,
+  .feature-tabs,
+  .grid.two,
+  .upload-row {
+    grid-template-columns: 1fr;
+  }
+
+  .topbar nav,
+  .feature-tabs {
+    display: grid;
+    width: 100%;
+  }
+
+  .feature-tab {
+    border-right: 0;
+    border-bottom: 1px solid var(--line-strong);
+  }
+
+  .feature-tab:last-child {
+    border-bottom: 0;
+  }
+}
